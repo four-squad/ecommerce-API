@@ -1,0 +1,448 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Ecommerce
+  description: tugas project altera
+# paths: {}
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/TECHMIN7_1/Ecommerce/1.0.0
+  - description: digunakan untuk running  
+    url: 54.254.27.167
+  
+  
+tags:
+  - name: Users
+  - name: Auth
+  - name: Products
+ 
+paths:
+  /registers:
+    post:
+      tags:
+        - "Users"
+      description: digunakan untuk menambahkan user
+      summary: register user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                alamat:
+                  type: string
+            example:
+              name: "Deva"
+              email: "techmin7@gmail.com"
+              password: "rahasia"
+              alamat: "jalan srilanka"
+      responses:
+        201:
+          description: "Berhasil insert data"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success add data"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /login:
+    post:
+      tags:
+        - "Auth"
+      description: digunakan untuk masuk kedalam sistem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        200:
+          description: "Berhasil login"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                data:
+                  name: "deva"
+                  token: "9u2npf9un24u"
+                message: "success login"
+        404:
+          description: "Kesalahan input data dari user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "data tidak ditemukan"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /users:
+    put:
+      tags:
+        - "Users"
+      summary: Update data user
+      description: Memperbaharui data user
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              example:
+                name: "Deva"
+                avatar: "www.google.com"
+                email: "deva@gmail.com"
+                password: "123"
+                address: "jalan srilanka"
+      responses:
+        200:
+          description: "Berhasil update"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "update berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+        - "Users"
+      summary: Delete data user
+      description: Menghapus data user
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: "Berhasil delete"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Delete user berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "Users"
+      summary: Get user by id
+      description: menampilkan data user berdasar id
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: data dari id user
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                     -  id : 1
+                        name: "deva"
+                        avatar: "www.google.com"
+                        email: "deva@gmail.com"
+                        password: "123"
+                        alamat: "jalan srilanka"
+                        products: [{
+                            id: 1,
+                            title: "mangkok",
+                            price: 50000,
+                            description: "mangkok kuat tahan panas",
+                            image: "www.google.com",
+                          }]
+          
+                  message: "success get user id"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /products:
+    post:
+      tags:
+        - "Products"
+      summary: Add products to user
+      description: menambahkan product ke user
+      security:
+        - JWTAuth : []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              example:
+                title: "mangkok baja"
+                price: 100000
+                description: "mangkok tahan panas tinggi"
+                image: "www.google.com"
+      responses:
+        201:
+          description: Posting berhasil.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "posting content berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "Products"
+      summary: Get all product from all user without Login
+      description: menampilkan semua product dari semua user untuk fungsi tanpa login
+      responses:
+        200:
+          description: data product dari semua user
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                     -  id : 1
+                        title: "mangkok baja"
+                        price: 100000
+                        image: "www.google.com"
+                     -  id : 2
+                        title: "piring batu"
+                        price: 500000
+                        image: "www.google.com"
+                  message: "berhasil menampilkan semua content"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /products/{product_id}: 
+    get:
+      tags:
+        - "Products"
+      summary: get product user by id product
+      description: menampilkan data product dari product id
+      parameters:
+        - name: product_id
+          description: "id product"
+          required: true
+          in: path
+          schema:
+            description: "id product"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: data product dari product id
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                      title: "mangkok baja"
+                      price: 100000
+                      description: "mangkok tahan panas tinggi"
+                      image: "www.google.com"
+                      seller_name: "paijo"
+                  message: "berhasil menampilkan product"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    put:
+      tags:
+        - "Products"
+      summary: edit product to user
+      description: mengubah product user
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: product_id
+          description: "id product"
+          required: true
+          in: path
+          schema:
+            description: "id product"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              example:
+                title: "mangkok baja"
+                price: 100000
+                description: "mangkok tahan panas tinggi"
+                image: "www.google.com"
+      responses:
+        200:
+          description: "Berhasil update"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                message: "update berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  
+    delete:
+      tags:
+        - "Products"
+      summary: Delete product user
+      description: Menghapus product user
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: product_id
+          description: "id product"
+          required: true
+          in: path
+          schema:
+            description: "id product"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: "Berhasil delete"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Delete product berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "user Token"  
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        address:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        avatar:
+          type: string
+    Content:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        price:
+          type: integer
+          format: int64
+        description:
+          type: string
+        image:
+          type: string
+    responseObject:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+    responseObjectArr:
+      type: object
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+        message:
+          type: string
+  responses:
+    400:
+      description: "Kesalahan dari user"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "kesalahan input"
+    404:
+      description: "Not Found"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "data not found"
+    500:
+      description: "Kesalahan dari server"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            example:
+              message: "data tidak bisa diolah"
