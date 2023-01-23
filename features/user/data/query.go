@@ -73,12 +73,21 @@ func (uq *userQuery) Profile(id uint) (user.Core, error) {
 }
 
 func (uq *userQuery) Update(userID uint, updatedProfile user.Core) (user.Core, error) {
-	cnvUpdated := CoreToData(updatedProfile)
-	isDupl := uq.isDuplicate(cnvUpdated.Email)
+	getEmail := Users{}
+	if err := uq.db.Where("id = ?", userID).First(&getEmail).Error; err != nil {
+		log.Println("Get profile by ID query error : ", err.Error())
+		return user.Core{}, err
+	}
 
-	if isDupl != false {
-		log.Println("Duplicated data, email already exist")
-		return user.Core{}, errors.New("Duplicated data, email already exist")
+	cnvUpdated := CoreToData(updatedProfile)
+
+	if getEmail.Email != updatedProfile.Email {
+		isDupl := uq.isDuplicate(cnvUpdated.Email)
+
+		if isDupl != false {
+			log.Println("Duplicated data, email already exist")
+			return user.Core{}, errors.New("Duplicated data, email already exist")
+		}
 	}
 
 	qry := uq.db.Model(Users{}).Where("id = ?", cnvUpdated.ID).Updates(cnvUpdated)
