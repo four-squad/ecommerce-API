@@ -70,8 +70,8 @@ func (pc *productControll) GetById() echo.HandlerFunc {
 		if errBind != nil {
 			return c.JSON(helper.PrintErrorResponse("Data not found"))
 		}
-		token := c.Get("user")
-		res, err2 := pc.srv.GetById(token, uint(idProduct))
+
+		res, err2 := pc.srv.GetById(uint(idProduct))
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
