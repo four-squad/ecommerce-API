@@ -74,6 +74,48 @@ func (pc *productControll) GetById() echo.HandlerFunc {
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "berhasil menampilkan content", ToResponseArr(res)))
+		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "berhasil menampilkan product", ToResponseArr(res)))
+	}
+}
+
+func (pc *productControll) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		tes, errBind := strconv.Atoi(c.Param("id"))
+		if errBind != nil {
+			return c.JSON(helper.PrintErrorResponse("Error binding data"))
+		}
+		token := c.Get("user")
+		tmp := AddReq{}
+		if err := c.Bind(&tmp); err != nil {
+			return c.JSON(http.StatusBadRequest, "kesalahan input")
+		}
+		//-----------
+		// Read file
+		//-----------
+		file, err := c.FormFile("image")
+		if err != nil {
+			file = nil
+		}
+		_, err2 := pc.srv.Update(token, uint(tes), *ToCore(tmp), file)
+		if err2 != nil {
+			return c.JSON(helper.PrintErrorResponse(err2.Error()))
+		}
+		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "update berhasil"))
+	}
+}
+
+func (pc *productControll) Delete() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		tes, errBind := strconv.Atoi(c.Param("id"))
+		if errBind != nil {
+			return c.JSON(helper.PrintErrorResponse("Kesalahan input"))
+		}
+		token := c.Get("user")
+		err2 := pc.srv.Delete(token, uint(tes))
+		if err2 != nil {
+			return c.JSON(helper.PrintErrorResponse(err2.Error()))
+		}
+		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "delete product berhasil"))
 	}
 }
