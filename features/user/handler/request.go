@@ -6,6 +6,7 @@ type RegisterRequest struct {
 	Name string `json:"name" form:"name"`
 	Email string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
+	Address string `json:"address" form:"address"`
 }
 
 type UpdateRequest struct {
@@ -29,6 +30,7 @@ func ToCore(data interface{}) *user.Core {
 		res.Name = cnv.Name
 		res.Email = cnv.Email
 		res.Password = cnv.Password
+		res.Address = cnv.Address
 	case UpdateRequest:
 		cnv := data.(UpdateRequest)
 		res.Avatar = cnv.Avatar
