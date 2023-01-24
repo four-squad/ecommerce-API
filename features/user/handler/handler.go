@@ -47,7 +47,7 @@ func (uc *userControll) Login() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		msg := fmt.Sprintf("Login successful. You are now logged in as %s.", res.Name)
+		msg := fmt.Sprintf("Logged in successfully")
 
 		return c.JSON(PrintSuccessReponse(http.StatusOK, msg, res, token))
 	}
