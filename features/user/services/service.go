@@ -35,7 +35,7 @@ func (uuc *userUseCase) Register(newUser user.Core) error {
 	err = uuc.qry.Register(newUser)
 	if err != nil {
 		msg := ""
-		if strings.Contains(err.Error(), "duplicated") {
+		if strings.Contains(err.Error(), "exist") {
 			msg = "Username or email already exist"
 		} else if strings.Contains(err.Error(), "query") {
 			msg = "There is a problem with the server"

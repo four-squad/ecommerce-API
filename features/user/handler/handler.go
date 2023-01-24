@@ -85,12 +85,12 @@ func (uc *userControll) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "Please input correctly")
 		}
 
-		res, err := uc.srv.Update(*formHeader, token, *ToCore(input))
+		_, err = uc.srv.Update(*formHeader, token, *ToCore(input))
 		if err != nil {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(PrintSuccessReponse(http.StatusAccepted, "Updated profile successfully", res))
+		return c.JSON(http.StatusAccepted, "Updated profile successfully")
 	}
 }
 
