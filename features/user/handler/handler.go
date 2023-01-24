@@ -4,9 +4,7 @@ import (
 	"ecommerce/features/user"
 	"ecommerce/helper"
 	"fmt"
-	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -55,35 +53,16 @@ func (uc *userControll) Login() echo.HandlerFunc {
 	}
 }
 
-func (uc *userControll) GetData() echo.HandlerFunc {
+func (uc *userControll) Profile() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Get("user")
 
-		res, err := uc.srv.GetData(token)
-
-		if err != nil {
-			return c.JSON(PrintErrorResponse(err.Error()))
-		}
-
-		return c.JSON(PrintSuccessReponse(http.StatusOK, "Displayed your profile successfully", res))
-	}
-}
-
-func (uc *userControll) Profile() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("id")) 
-
-		if err != nil {
-			log.Println("convert id error", err.Error())
-			return c.JSON(http.StatusBadGateway, "Invalid input")
-		}
-
-		res, err := uc.srv.Profile(uint(id))
+		res, err := uc.srv.Profile(token)
 
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "success get user content", res))
+		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "Displayed your profile successfully", res))
 	}
 }
 

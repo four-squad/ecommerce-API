@@ -165,8 +165,8 @@ paths:
     get:
       tags:
         - "Users"
-      summary: Get user data to update profile
-      description: show user data to update profile
+      summary: Show profile & products
+      description: show profile & products
       security:
         - JWTAuth : []
       responses:
@@ -181,33 +181,8 @@ paths:
                     id : 1
                     name: "deva"
                     avatar: "www.google.com"
-                    email: "deva@gmail.com"
-                    address: "jalan srilanka"
-                  message: "Displayed user profile successfully"
-        404:
-          $ref: '#/components/responses/404'
-        500:
-          $ref: '#/components/responses/500'
-  /users/{id}:
-    get:
-      tags:
-        - "Users"
-      summary: Get user data by ID
-      description: show user data by ID
-      security:
-        - JWTAuth : []
-      responses:
-        200:
-          description: Success show user data
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data:
-                    id : 1
-                    name: "deva"
-                    avatar: "www.google.com"
+                    email: "deav@gmail.com"
+                    address: "Jalan Srilanka"
                     products: [{
                         id: 1,
                         title: "mangkok",
