@@ -33,7 +33,7 @@ func (uc *userControll) Register() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(http.StatusCreated, "Registered a new account successfully")
+		return c.JSON(PrintSuccessNoData(http.StatusCreated, "Registered a new account successfully"))
 	}
 }
 
@@ -123,6 +123,6 @@ func (uc *userControll) Deactivate() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(http.StatusAccepted, "Deactivated your account successfully")
+		return c.JSON(PrintSuccessNoData(http.StatusAccepted, "Deactivated your account successfully"))
 	}
 }
