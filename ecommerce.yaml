@@ -88,7 +88,10 @@ paths:
                 $ref: '#/components/schemas/responseObject'
               example:
                 data:
+                  id: 1
+                  avatar: "www.google.com"
                   name: "deva"
+                  email: "deva@gmail.com"
                   token: "9u2npf9un24u"
                 message: "success login"
         404:
