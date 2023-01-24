@@ -7,6 +7,7 @@ type ProductResponse struct {
 	Price       uint   `validate:"required" json:"price" form:"price"`
 	Description string `json:"description" form:"description"`
 	Image       string `json:"image" form:"image"`
+	UserID 		uint   `json:"user_id" form:"user_id"`
 }
 
 type GetAllRespon struct {

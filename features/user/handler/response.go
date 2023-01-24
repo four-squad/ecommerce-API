@@ -40,6 +40,16 @@ func PrintSuccessReponse(code int, message string, data ...interface{}) (int, in
 	return code, resp
 }
 
+func PrintSuccessNoData(code int, message string) (int, interface{}) {
+	resp := map[string]interface{}{}
+
+	if message != "" {
+		resp["message"] = message
+	}
+
+	return code, resp
+}
+
 func PrintErrorResponse(msg string) (int, interface{}) {
 	resp := map[string]interface{}{}
 	code := -1

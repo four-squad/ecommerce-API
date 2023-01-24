@@ -4,7 +4,9 @@ import (
 	"ecommerce/features/user"
 	"ecommerce/helper"
 	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -31,7 +33,7 @@ func (uc *userControll) Register() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(http.StatusCreated, "Registered a new account successfully")
+		return c.JSON(PrintSuccessNoData(http.StatusCreated, "Registered a new account successfully"))
 	}
 }
 
@@ -47,23 +49,41 @@ func (uc *userControll) Login() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		msg := fmt.Sprintf("Login successful. You are now logged in as %s.", res.Name)
+		msg := fmt.Sprintf("Logged in successfully")
 
 		return c.JSON(PrintSuccessReponse(http.StatusOK, msg, res, token))
 	}
 }
 
-func (uc *userControll) Profile() echo.HandlerFunc {
+func (uc *userControll) GetData() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Get("user")
 
-		res, err := uc.srv.Profile(token)
+		res, err := uc.srv.GetData(token)
 
 		if err != nil {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
 		return c.JSON(PrintSuccessReponse(http.StatusOK, "Displayed your profile successfully", res))
+	}
+}
+
+func (uc *userControll) Profile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id")) 
+
+		if err != nil {
+			log.Println("convert id error", err.Error())
+			return c.JSON(http.StatusBadGateway, "Invalid input")
+		}
+
+		res, err := uc.srv.Profile(uint(id))
+
+		if err != nil {
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "success get user content", res))
 	}
 }
 
@@ -90,7 +110,7 @@ func (uc *userControll) Update() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(http.StatusAccepted, "Updated profile successfully")
+		return c.JSON(PrintSuccessNoData(http.StatusAccepted, "Updated profile successfully"))
 	}
 }
 
@@ -103,6 +123,6 @@ func (uc *userControll) Deactivate() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(http.StatusAccepted, "Deactivated your account successfully")
+		return c.JSON(PrintSuccessNoData(http.StatusAccepted, "Deactivated your account successfully"))
 	}
 }
