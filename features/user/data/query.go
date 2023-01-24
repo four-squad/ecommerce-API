@@ -63,13 +63,31 @@ func (uq *userQuery) Login(email string) (user.Core, error) {
 	return ToCore(res), nil
 }
 
-func (uq *userQuery) Profile(id uint) (user.Core, error) {
+func (uq *userQuery) GetData(id uint) (user.Core, error) {
 	res := Users{}
 	if err := uq.db.Where("id = ?", id).First(&res).Error; err != nil {
 		log.Println("Get profile by ID query error : ", err.Error())
 		return user.Core{}, err
 	}
 	return ToCore(res), nil
+}
+
+func (uq *userQuery) Profile(id uint) (interface{}, error) {
+	resProfile := map[string]interface{}{}
+	if err := uq.db.Raw("SELECT users.id, users.avatar, users.name FROM users WHERE users.id = ?", id).Find(&resProfile).Error; err != nil {
+		log.Println("Get User Data by id query error : ", err.Error())
+		return nil, err
+	}
+
+	resProducts := []map[string]interface{}{}
+	if err := uq.db.Raw("SELECT products.id, products.title, products.price, products.description, products.image FROM products JOIN users ON products.user_id = users.id WHERE users.id = ?", id).Find(&resProducts).Error; err != nil {
+		log.Println("Get product by user ID query error : ", err.Error())
+		return nil, err
+	}
+
+	resProfile["products"] = resProducts
+
+	return resProfile, nil
 }
 
 func (uq *userQuery) Update(userID uint, updatedProfile user.Core) (user.Core, error) {

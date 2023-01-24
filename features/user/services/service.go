@@ -74,13 +74,13 @@ func (uuc *userUseCase) Login(username, password string) (string, user.Core, err
 	return useToken, res, nil
 }
 
-func (uuc *userUseCase) Profile(token interface{}) (user.Core, error) {
+func (uuc *userUseCase) GetData(token interface{}) (user.Core, error) {
 	id := helper.ExtractToken(token)
 	if id <= 0 {
 		return user.Core{}, errors.New("user not found")
 	}
 
-	res, err := uuc.qry.Profile(uint(id))
+	res, err := uuc.qry.GetData(uint(id))
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -93,8 +93,29 @@ func (uuc *userUseCase) Profile(token interface{}) (user.Core, error) {
 	return res, nil
 }
 
+func (uuc *userUseCase) Profile(id uint) (interface{}, error) {
+	res, err := uuc.qry.Profile(id)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "content not found"
+		} else {
+			msg = "unable to process the data"
+		}
+		return nil, errors.New(msg)
+	}
+	return res, nil
+}
+
 func (uuc *userUseCase) Update(formHeader multipart.FileHeader, token interface{}, updatedProfile user.Core) (user.Core, error) {
 	id := helper.ExtractToken(token)
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(updatedProfile.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Println("generate bcrypt error : ", err.Error())
+		return user.Core{},errors.New("Unable to process password")
+	}
+	updatedProfile.Password = string(hashed)
 
 	if id <= 0 {
 		return user.Core{}, errors.New("Data not found")

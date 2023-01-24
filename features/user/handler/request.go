@@ -13,6 +13,7 @@ type UpdateRequest struct {
 	Avatar string `json:"avatar" form:"avatar"`
 	Name string `json:"name" form:"name"`
 	Email string `json:"email" form:"email"`
+	Password string `json:"password" form:"password"`
 	Address string `json:"address" form:"address"`
 }
 
@@ -36,6 +37,7 @@ func ToCore(data interface{}) *user.Core {
 		res.Avatar = cnv.Avatar
 		res.Name = cnv.Name
 		res.Email = cnv.Email
+		res.Password = cnv.Password
 		res.Address = cnv.Address
 	default:
 		return nil
