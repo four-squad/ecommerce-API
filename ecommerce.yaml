@@ -438,6 +438,15 @@ paths:
       description: menampilkan data cart dari cart id setelah klik checkout
       security:
         - JWTAuth : []
+      parameters:
+        - name: cart_id
+          description: "id cart"
+          required: true
+          in: path
+          schema:
+            description: "id cart"
+            type: integer
+            example: 1
       responses:
         200:
           description: data cart dari cart id
