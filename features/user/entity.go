@@ -18,7 +18,6 @@ type Core struct {
 type UserHandler interface {
 	Register() echo.HandlerFunc
 	Login() echo.HandlerFunc
-	GetData() echo.HandlerFunc
 	Profile() echo.HandlerFunc
 	Update() echo.HandlerFunc
 	Deactivate() echo.HandlerFunc
@@ -27,8 +26,7 @@ type UserHandler interface {
 type UserService interface {
 	Register(newUser Core) error
 	Login(email, password string) (string, Core, error)
-	GetData(token interface{}) (Core, error)
-	Profile(id uint) (interface{}, error)
+	Profile(token interface{}) (interface{}, error)
 	Update(formHeader multipart.FileHeader, token interface{}, updatedProfile Core) (Core, error)
 	Deactivate(token interface{}) error
 }
@@ -36,7 +34,6 @@ type UserService interface {
 type UserData interface {
 	Register(newUser Core) error
 	Login(email string) (Core, error)
-	GetData(id uint) (Core, error)
 	Profile(id uint) (interface{}, error)
 	Update(id uint, updatedProfile Core) (Core, error)
 	Deactivate(id uint) error

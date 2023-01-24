@@ -39,8 +39,7 @@ func main() {
 
 	user := e.Group("/users")
 
-	user.GET("", userHdl.GetData(), middleware.JWT([]byte(config.JWTKey)))
-	user.GET("/:id", userHdl.Profile())
+	user.GET("", userHdl.Profile(), middleware.JWT([]byte(config.JWTKey)))
 	user.PUT("", userHdl.Update(), middleware.JWT([]byte(config.JWTKey)))
 	user.DELETE("", userHdl.Deactivate(), middleware.JWT([]byte(config.JWTKey)))
 
