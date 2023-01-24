@@ -52,10 +52,10 @@ func (pq *productQuery) Add(newProduct product.CoreProduct, id uint) (product.Co
 	return ToCores(cnv), nil
 }
 
-func (pq *productQuery) GetById(idUser uint, idProduct uint) ([]product.CoreProduct, error) {
+func (pq *productQuery) GetById(idProduct uint) ([]product.CoreProduct, error) {
 	var sementara []Products
 
-	if err := pq.db.Preload("User").Where("product_id = ?", idProduct).Find(&sementara).Error; err != nil {
+	if err := pq.db.Preload("User").Where("id = ?", idProduct).Find(&sementara).Error; err != nil {
 		log.Println("Get By ID query error", err.Error())
 		return ToCoresArr(sementara), err
 	}
