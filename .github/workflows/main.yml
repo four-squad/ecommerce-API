@@ -32,7 +32,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             touch ecommerce.txt
-            echo "Great, it works! at $(TZ='Asia/Jakarta' date)" >> ecommerce.txt
+            echo "Great, it works! at $(TZ='Asia/Jakarta' date "+%A %d-%b-%Y %H:%M:%S %Z")" >> ecommerce.txt
             sudo chmod 777 /var/run/docker.sock
             docker pull ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGE }}:latest
             docker stop ${{ secrets.CONTAINER }}
