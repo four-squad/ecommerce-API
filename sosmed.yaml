@@ -18,7 +18,7 @@ tags:
   - name: Products
  
 paths:
-  /registers:
+  /register:
     post:
       tags:
         - "Users"
@@ -175,11 +175,10 @@ paths:
                 type: object
                 example:
                   data:
-                     -  id : 1
+                        id : 1
                         name: "deva"
                         avatar: "www.google.com"
                         email: "deva@gmail.com"
-                        password: "123"
                         alamat: "jalan srilanka"
                         products: [{
                             id: 1,
@@ -221,7 +220,7 @@ paths:
               schema:
                 type: object
                 example:
-                  message: "posting content berhasil"
+                  message: "posting product berhasil"
         400:
           $ref: '#/components/responses/400'
         500:
@@ -248,7 +247,7 @@ paths:
                         title: "piring batu"
                         price: 500000
                         image: "www.google.com"
-                  message: "berhasil menampilkan semua content"
+                  message: "berhasil menampilkan semua product"
         404:
           $ref: '#/components/responses/404'
         500:

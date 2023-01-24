@@ -62,3 +62,29 @@ func (pq *productQuery) GetById(idUser uint, idProduct uint) ([]product.CoreProd
 	X := ToCoresArr(sementara)
 	return X, nil
 }
+
+func (pq *productQuery) Update(userId uint, productId uint, updatedData product.CoreProduct) (product.CoreProduct, error) {
+	cnv := CoreToData(updatedData)
+	qry := pq.db.Where("user_id = ? AND id = ?", userId, productId).Updates(&cnv)
+	if qry.RowsAffected <= 0 {
+		log.Println("update product query error : data not found")
+		return product.CoreProduct{}, errors.New("not found")
+	}
+
+	if err := qry.Error; err != nil {
+		log.Println("update book query error :", err.Error())
+		return product.CoreProduct{}, err
+	}
+	// cnv.ID = id
+	Y := ToCores(cnv)
+	return Y, nil
+}
+
+func (pq *productQuery) Delete(userId uint, productId uint) error {
+	var sementara Products
+	if err := pq.db.Where("user_id = ? AND id = ?", userId, productId).Delete(&sementara).Error; err != nil {
+		log.Println("Get By ID query error", err.Error())
+		return err
+	}
+	return nil
+}
