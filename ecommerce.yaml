@@ -546,6 +546,96 @@ paths:
           $ref: '#/components/responses/400'
         500:
           $ref: '#/components/responses/500'
+  /transactions/buy:
+    get:
+      tags:
+        - "Transactions"
+      summary: Get all buy transactions by User ID
+      description: menampilkan seluruh buy transactions by User ID
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: All sell transactions data
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    [{
+                      id: 1,
+                      title: "wajan baja anti tank",
+                      image: "www.google.com",
+                      qty: 1,
+                      price: 50000,
+                      total_price: 50000,
+                      seller_name: "Deva",
+                      status: "pending",
+                      updated_at: 23 Jan 2023
+                    },
+                    {
+                      id: 2,
+                      title: "wajan baja anti mage",
+                      image: "www.google.com",
+                      qty: 1,
+                      price: 50000,
+                      total_price: 50000,
+                      seller_name: "Andi",
+                      status: "paid",
+                      updated_at: 24 Jan 2023
+                    },
+                    ]              
+                  message: "berhasil menampilkan all transactions"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /transactions/sell:
+    get:
+      tags:
+        - "Transactions"
+      summary: Get all sell transactions by User ID
+      description: menampilkan seluruh sell transactions by User ID
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: All buy transactions data
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    [{
+                      id: 1,
+                      title: "wajan baja anti tank",
+                      image: "www.google.com",
+                      qty: 1,
+                      price: 50000,
+                      total_price: 50000,
+                      buyer_name: "Rizal",
+                      status: "pending",
+                      updated_at: 23 Jan 2023
+                    },
+                    {
+                      id: 2,
+                      title: "wajan baja anti mage",
+                      image: "www.google.com",
+                      qty: 1,
+                      price: 50000,
+                      total_price: 50000,
+                      buye_name: "Alfian",
+                      status: "paid",
+                      updated_at: 24 Jan 2023
+                    },
+                    ]              
+                  message: "berhasil menampilkan all buy transactions"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
 components:
   securitySchemes:
     JWTAuth:
