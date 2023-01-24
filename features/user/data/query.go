@@ -63,18 +63,9 @@ func (uq *userQuery) Login(email string) (user.Core, error) {
 	return ToCore(res), nil
 }
 
-func (uq *userQuery) GetData(id uint) (user.Core, error) {
-	res := Users{}
-	if err := uq.db.Where("id = ?", id).First(&res).Error; err != nil {
-		log.Println("Get profile by ID query error : ", err.Error())
-		return user.Core{}, err
-	}
-	return ToCore(res), nil
-}
-
 func (uq *userQuery) Profile(id uint) (interface{}, error) {
 	resProfile := map[string]interface{}{}
-	if err := uq.db.Raw("SELECT users.id, users.avatar, users.name FROM users WHERE users.id = ?", id).Find(&resProfile).Error; err != nil {
+	if err := uq.db.Raw("SELECT users.id, users.avatar, users.name, users.email, users.address FROM users WHERE users.id = ?", id).Find(&resProfile).Error; err != nil {
 		log.Println("Get User Data by id query error : ", err.Error())
 		return nil, err
 	}

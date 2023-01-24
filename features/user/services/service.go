@@ -74,31 +74,13 @@ func (uuc *userUseCase) Login(username, password string) (string, user.Core, err
 	return useToken, res, nil
 }
 
-func (uuc *userUseCase) GetData(token interface{}) (user.Core, error) {
+func (uuc *userUseCase) Profile(token interface{}) (interface{}, error) {
 	id := helper.ExtractToken(token)
-	if id <= 0 {
-		return user.Core{}, errors.New("user not found")
-	}
-
-	res, err := uuc.qry.GetData(uint(id))
+	res, err := uuc.qry.Profile(uint(id))
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
-			msg = "Data not found"
-		} else {
-			msg = "There is a problem with the server"
-		}
-		return user.Core{}, errors.New(msg)
-	}
-	return res, nil
-}
-
-func (uuc *userUseCase) Profile(id uint) (interface{}, error) {
-	res, err := uuc.qry.Profile(id)
-	if err != nil {
-		msg := ""
-		if strings.Contains(err.Error(), "not found") {
-			msg = "content not found"
+			msg = "data not found"
 		} else {
 			msg = "unable to process the data"
 		}
