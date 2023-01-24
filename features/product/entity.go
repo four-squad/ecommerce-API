@@ -12,7 +12,19 @@ type CoreProduct struct {
 	Price       uint
 	Description string
 	Image       string
+	UserID      uint
+	Seller      string
 }
+
+// type CoreUser struct {
+// 	ID        uint
+// 	Avatar    string
+// 	Name      string
+// 	Email     string
+// 	Address   string
+// 	Password  string
+// 	Productss []CoreProduct
+// }
 
 type ProductHandler interface {
 	Add() echo.HandlerFunc

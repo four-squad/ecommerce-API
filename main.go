@@ -43,10 +43,11 @@ func main() {
 	user.PUT("", userHdl.Update(), middleware.JWT([]byte(config.JWTKey)))
 	user.DELETE("", userHdl.Deactivate(), middleware.JWT([]byte(config.JWTKey)))
 
-	e.GET("/products/:id", productHdl.GetById(), middleware.JWT([]byte(config.JWTKey)))
-	e.GET("/products", productHdl.GetAll(), middleware.JWT([]byte(config.JWTKey)))
+	e.GET("/products/:id", productHdl.GetById())
+	e.GET("/products", productHdl.GetAll())
 	e.POST("/products", productHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
-
+	e.PUT("/products/:id", productHdl.Update(), middleware.JWT([]byte(config.JWTKey)))
+	e.DELETE("/products/:id", productHdl.Delete(), middleware.JWT([]byte(config.JWTKey)))
 	if err := e.Start(":8000"); err != nil {
 		log.Println(err.Error())
 	}
