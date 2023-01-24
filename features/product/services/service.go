@@ -89,9 +89,8 @@ func (puu *productUseCase) Add(newProduct product.CoreProduct, token interface{}
 
 }
 
-func (puu *productUseCase) GetById(token interface{}, idProduct uint) ([]product.CoreProduct, error) {
-	idUser := helper.ExtractToken(token)
-	res, err := puu.qry.GetById(uint(idUser), idProduct)
+func (puu *productUseCase) GetById(idProduct uint) ([]product.CoreProduct, error) {
+	res, err := puu.qry.GetById(idProduct)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {

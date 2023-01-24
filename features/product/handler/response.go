@@ -7,7 +7,7 @@ type ProductResponse struct {
 	Price       uint   `validate:"required" json:"price" form:"price"`
 	Description string `json:"description" form:"description"`
 	Image       string `json:"image" form:"image"`
-	UserID 		uint   `json:"user_id" form:"user_id"`
+	Seller      string `json:"seller_name" form:"seller_name"`
 }
 
 type GetAllRespon struct {
@@ -31,6 +31,25 @@ func ToResponseArr(data []product.CoreProduct) []GetAllRespon {
 	res := []GetAllRespon{}
 	for _, v := range data {
 		tmp := ToResponse(v)
+		res = append(res, tmp)
+	}
+	return res
+}
+
+func ToResponse2(data product.CoreProduct) ProductResponse {
+	return ProductResponse{
+		Title:       data.Title,
+		Price:       data.Price,
+		Description: data.Description,
+		Image:       data.Image,
+		Seller:      data.Seller,
+	}
+}
+
+func ToResponseArr2(data []product.CoreProduct) []ProductResponse {
+	res := []ProductResponse{}
+	for _, v := range data {
+		tmp := ToResponse2(v)
 		res = append(res, tmp)
 	}
 	return res

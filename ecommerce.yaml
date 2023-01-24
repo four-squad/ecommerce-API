@@ -16,6 +16,8 @@ tags:
   - name: Auth
   - name: Users
   - name: Products
+  - name: Carts
+  - name: Transactions
  
 paths:
   /register:
@@ -354,6 +356,192 @@ paths:
                 type: object
                 example:
                   message: "Delete product berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /carts/{product_id}:
+    post:
+      tags:
+        - "Carts"
+      summary: Add products to cart
+      description: menambahkan product ke cart
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: product_id
+          description: "id product"
+          required: true
+          in: path
+          schema:
+            description: "id product"
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: Add cart berhasil.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Add cart berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    
+  /checkout/{cart_id}:
+    put:
+      tags:
+        - "Carts"
+      summary: edit cart user
+      description: mengubah cart user
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: cart_id
+          description: "id cart"
+          required: true
+          in: path
+          schema:
+            description: "id cart"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                qty: 2
+                total_price: 200000
+      responses:
+        200:
+          description: "Berhasil checkout"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                message: "checkout berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /carts/{cart_id}:
+    get:
+      tags:
+        - "Carts"
+      summary: get cart by id cart
+      description: menampilkan data cart dari cart id setelah klik checkout
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: data cart dari cart id
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    {
+                      title: "wajan baja anti tank",
+                      qty: 1,
+                      price: 50000,
+                      image: "www.google.com",
+                      total_price: 50000
+                    }              
+                  message: "berhasil menampilkan cart"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+        - "Carts"
+      summary: Delete cart user
+      description: Menghapus cart user
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: cart_id
+          description: "id cart"
+          required: true
+          in: path
+          schema:
+            description: "id cart"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: "Berhasil delete"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Delete cart berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /carts:
+    get:
+      tags:
+        - "Carts"
+      summary: get cart by id user
+      description: menampilkan data cart dari user id
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: data cart dari user id
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    [{
+                      id: 1,
+                      title: "wajan baja anti tank",
+                      qty: 1,
+                      price: 50000,
+                      image: "www.google.com"
+                    }]              
+                  message: "berhasil menampilkan cart"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /transactions:
+    post:
+      tags:
+        - "Transactions"
+      summary: Add Transaction 
+      description: menambahkan Transaction
+      security:
+        - JWTAuth : []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                address: "jalan sriwiwiwi"
+      responses:
+        201:
+          description: Add Transaction berhasil.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Add Transaction berhasil"
         400:
           $ref: '#/components/responses/400'
         500:

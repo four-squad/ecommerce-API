@@ -70,12 +70,12 @@ func (pc *productControll) GetById() echo.HandlerFunc {
 		if errBind != nil {
 			return c.JSON(helper.PrintErrorResponse("Data not found"))
 		}
-		token := c.Get("user")
-		res, err2 := pc.srv.GetById(token, uint(idProduct))
+
+		res, err2 := pc.srv.GetById(uint(idProduct))
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "berhasil menampilkan product", ToResponseArr(res)))
+		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "berhasil menampilkan product", ToResponseArr2(res)))
 	}
 }
 
@@ -102,7 +102,7 @@ func (pc *productControll) Update() echo.HandlerFunc {
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "update berhasil"))
+		return c.JSON(http.StatusOK, helper.SuccessResponse("Update product berhasil"))
 	}
 }
 
@@ -117,6 +117,6 @@ func (pc *productControll) Delete() echo.HandlerFunc {
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "delete product berhasil"))
+		return c.JSON(http.StatusOK, helper.SuccessResponse("Delete product berhasil"))
 	}
 }
