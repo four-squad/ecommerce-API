@@ -40,3 +40,9 @@ func PrintErrorResponse(msg string) (int, interface{}) {
 
 	return code, resp
 }
+
+func SuccessResponse(msg string) map[string]any {
+	return map[string]any{
+		"message": msg,
+	}
+}

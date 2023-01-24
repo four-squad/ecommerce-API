@@ -28,7 +28,7 @@ func (pc *productControll) GetAll() echo.HandlerFunc {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "berhasil menampilkan semua product", res))
+		return c.JSON(helper.PrintSuccessReponse(http.StatusOK, "berhasil menampilkan semua product", ToResponseArr(res)))
 	}
 }
 
@@ -52,7 +52,8 @@ func (pc *productControll) Add() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "posting product berhasil", nil))
+		fmt.Println("====handler2======")
+		return c.JSON(http.StatusOK, helper.SuccessResponse("posting product berhasil"))
 
 	}
 }
