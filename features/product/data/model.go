@@ -25,7 +25,6 @@ type User struct {
 	Address   string
 	Password  string
 	Productss []Products
-	// UserID    uint
 }
 
 func ToCores(data Products) product.CoreProduct {
