@@ -7,7 +7,9 @@ type ProductResponse struct {
 	Price       uint   `validate:"required" json:"price" form:"price"`
 	Description string `json:"description" form:"description"`
 	Image       string `json:"image" form:"image"`
-	Seller      string `json:"seller_name" form:"seller_name"`
+	// Seller      string       `json:"seller_name" form:"seller_name"`
+	// User UserResponse `json:"user" form:"user"`
+	Name string `json:"seller" form:"seller"`
 }
 
 type GetAllRespon struct {
@@ -16,6 +18,11 @@ type GetAllRespon struct {
 	Price uint   `validate:"required" json:"price" form:"price"`
 	Image string `json:"image" form:"image"`
 }
+
+// type UserResponse struct {
+// 	// ID   uint   `json:"id" form:"id"`
+// 	Name string `json:"seller" form:"seller"`
+// }
 
 func ToResponse(data product.CoreProduct) GetAllRespon {
 	return GetAllRespon{
@@ -42,7 +49,11 @@ func ToResponse2(data product.CoreProduct) ProductResponse {
 		Price:       data.Price,
 		Description: data.Description,
 		Image:       data.Image,
-		Seller:      data.Seller,
+		// User: UserResponse{
+		// 	// ID:   data.User.ID,
+		// 	Name: data.User.Name,
+		// },
+		Name: data.User.Name,
 	}
 }
 
