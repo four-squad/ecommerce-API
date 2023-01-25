@@ -26,6 +26,7 @@ func (cq *cartQuery) Add(idUser uint, idProduct uint) error {
 	cnv.ProductID = idProduct
 	fmt.Println("======data1=====")
 	err := cq.db.Create(&cnv).Error
+	// err2 := cq.db.Model(&X{}).Select("name").Find(&cnv).Error
 
 	if err != nil {
 		log.Println("register query error", err.Error())
