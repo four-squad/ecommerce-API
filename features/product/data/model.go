@@ -2,6 +2,7 @@ package data
 
 import (
 	c "ecommerce/features/cart/data"
+
 	"ecommerce/features/product"
 
 	"gorm.io/gorm"
@@ -14,17 +15,19 @@ type Products struct {
 	Description string
 	Image       string
 	UserID      uint
-	// User        User
-	Cartss []c.Carts `gorm:"foreignKey:ProductID"`
+	User        Users
+	Cartss      []c.Carts `gorm:"foreignKey:ProductID"`
 }
-type User struct {
+
+type Users struct {
 	gorm.Model
-	Avatar    string
-	Name      string
-	Email     string
-	Address   string
-	Password  string
-	Productss []Products
+	Avatar   string
+	Name     string
+	Email    string
+	Address  string
+	Password string
+	Cartss   []c.Carts  `gorm:"foreignKey:UserID"`
+	Product  []Products `gorm:"foreignKey:UserID"`
 }
 
 func ToCores(data Products) product.CoreProduct {
@@ -34,8 +37,10 @@ func ToCores(data Products) product.CoreProduct {
 		Price:       data.Price,
 		Description: data.Description,
 		Image:       data.Image,
-		// UserID:      data.User.ID,
-		// Seller:      data.User.Name,
+		User: product.CoreUser{
+			ID:   data.User.ID,
+			Name: data.User.Name,
+		},
 	}
 }
 
@@ -47,9 +52,9 @@ func CoreToData(data product.CoreProduct) Products {
 		Description: data.Description,
 		Image:       data.Image,
 		UserID:      data.UserID,
-		// Seller:      data.User.Name,
 	}
 }
+
 func ToCoresArr(data []Products) []product.CoreProduct {
 	arrRes := []product.CoreProduct{}
 	for _, v := range data {

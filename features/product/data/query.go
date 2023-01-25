@@ -33,7 +33,7 @@ func (pq *productQuery) GetAll() ([]product.CoreProduct, error) {
 
 func (pq *productQuery) Add(newProduct product.CoreProduct, id uint) (product.CoreProduct, error) {
 	cnv := CoreToData(newProduct)
-	// cnv.User.ID = id
+	cnv.UserID = id
 	fmt.Println("======data1=====")
 	err := pq.db.Create(&cnv).Error
 
