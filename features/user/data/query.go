@@ -71,7 +71,7 @@ func (uq *userQuery) Profile(id uint) (interface{}, error) {
 	}
 
 	resProducts := []map[string]interface{}{}
-	if err := uq.db.Raw("SELECT products.id, products.title, products.price, products.description, products.image FROM products JOIN users ON products.user_id = users.id WHERE users.id = ?", id).Find(&resProducts).Error; err != nil {
+	if err := uq.db.Raw("SELECT products.id, products.title, products.price, products.description, products.image FROM products JOIN users ON products.user_id = users.id WHERE users.id = ? AND products.deleted_at IS NULL", id).Find(&resProducts).Error; err != nil {
 		log.Println("Get product by user ID query error : ", err.Error())
 		return nil, err
 	}
