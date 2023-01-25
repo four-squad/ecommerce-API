@@ -102,7 +102,7 @@ func (pc *productControll) Update() echo.HandlerFunc {
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
-		return c.JSON(http.StatusOK, helper.SuccessResponse("Update product berhasil"))
+		return c.JSON(http.StatusOK, helper.SuccessResponse("Update berhasil"))
 	}
 }
 

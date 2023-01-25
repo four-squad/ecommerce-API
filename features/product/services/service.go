@@ -29,7 +29,7 @@ func (puu *productUseCase) GetAll() ([]product.CoreProduct, error) {
 		if strings.Contains(err.Error(), "not found") {
 			msg = "data not found"
 		} else {
-			msg = "data tidak bisa diolah"
+			msg = "There is a problem with the server"
 		}
 		return []product.CoreProduct{}, errors.New(msg)
 	}
@@ -78,9 +78,9 @@ func (puu *productUseCase) Add(newProduct product.CoreProduct, token interface{}
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
-			msg = "kesalahan input"
+			msg = "Please input correctly"
 		} else {
-			msg = "data tidak bisa diolah"
+			msg = "There is a problem with the server"
 		}
 		return product.CoreProduct{}, errors.New(msg)
 	}
@@ -96,7 +96,7 @@ func (puu *productUseCase) GetById(idProduct uint) ([]product.CoreProduct, error
 		if strings.Contains(err.Error(), "not found") {
 			msg = "data not found"
 		} else {
-			msg = "data tidak bisa diolah"
+			msg = "There is a problem with the server"
 		}
 		return []product.CoreProduct{}, errors.New(msg)
 	}
@@ -133,9 +133,9 @@ func (puu *productUseCase) Update(token interface{}, id uint, tmp product.CorePr
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
-			msg = "kesalahan input"
+			msg = "Please input correctly"
 		} else {
-			msg = "data tidak bisa diolah"
+			msg = "There is a problem with the server"
 		}
 		return product.CoreProduct{}, errors.New(msg)
 	}
@@ -149,9 +149,9 @@ func (puu *productUseCase) Delete(token interface{}, productId uint) error {
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
-			msg = "kesalahan input"
+			msg = "Please input correctly"
 		} else {
-			msg = "data tidak bisa diolah"
+			msg = "There is a problem with the server"
 		}
 		return errors.New(msg)
 	}
