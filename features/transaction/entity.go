@@ -22,18 +22,18 @@ type Core struct {
 
 type TrxHandler interface {
 	Add() echo.HandlerFunc
-	BuyHistory() echo.HandlerFunc
-	SellHistory() echo.HandlerFunc
+	// BuyHistory() echo.HandlerFunc
+	// SellHistory() echo.HandlerFunc
 }
 
 type TrxService interface {
-	Add(newTrx Core) error
-	BuyHistory(token interface{}) ([]Core, error)
-	SellHistory(token interface{}) ([]Core, error)
+	Add(cartID uint, token interface{}, newTrx Core) error
+	// BuyHistory(token interface{}) ([]Core, error)
+	// SellHistory(token interface{}) ([]Core, error)
 }
 
 type TrxData interface {
-	Add(newTrx Core) error
-	BuyHistory(userID uint) ([]Core, error)
-	SellHistory(userID uint) ([]Core, error)
+	Add(cartID uint, userID uint, newTrx Core) error
+	// BuyHistory(userID uint) ([]Core, error)
+	// SellHistory(userID uint) ([]Core, error)
 }
