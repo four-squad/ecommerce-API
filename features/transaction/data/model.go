@@ -14,6 +14,14 @@ type Transactions struct {
 	PaymentUrl string
 	Status     string
 }
+type TransactionDetail struct {
+	TransactionID uint `gorm:"primary_key"`
+	ProductID     uint `gorm:"primary_key"`
+	Title         string
+	Price         uint
+	Qty           uint
+	TotalPrice    uint
+}
 
 func ToCore(data Transactions) transaction.Core {
 	return transaction.Core{

@@ -29,4 +29,5 @@ func Migrate(db *gorm.DB) {
 	db.AutoMigrate(product.Products{})
 	db.AutoMigrate(cart.Carts{})
 	db.AutoMigrate(transaction.Transactions{})
+	db.AutoMigrate(transaction.TransactionDetail{})
 }
