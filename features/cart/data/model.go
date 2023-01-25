@@ -2,7 +2,6 @@ package data
 
 import (
 	"ecommerce/features/cart"
-	"ecommerce/features/product/data"
 
 	"gorm.io/gorm"
 )
@@ -12,26 +11,33 @@ type Carts struct {
 	Qty         uint
 	Total_price uint
 	UserID      uint
-	User        data.User
-	ProductID   uint
-	Product     data.Products
+	// User        User
+	ProductID uint
+	Product   Product
 }
 
-type Products struct {
+// type X struct {
+// 	Title string
+// 	Price uint
+// 	Image string
+// }
+
+type Product struct {
 	gorm.Model
 	Title       string
 	Price       uint
 	Description string
 	Image       string
 }
-type User struct {
-	gorm.Model
-	Avatar   string
-	Name     string
-	Email    string
-	Address  string
-	Password string
-}
+
+// type User struct {
+// 	gorm.Model
+// 	Avatar   string
+// 	Name     string
+// 	Email    string
+// 	Address  string
+// 	Password string
+// }
 
 func ToCores(data Carts) cart.CoreCart {
 	return cart.CoreCart{
@@ -41,7 +47,7 @@ func ToCores(data Carts) cart.CoreCart {
 		Price:       data.Product.Price,
 		Image:       data.Product.Image,
 		Total_Price: data.Total_price,
-		UserID:      data.User.ID,
+		UserID:      data.UserID,
 		ProductID:   data.Product.ID,
 	}
 }
