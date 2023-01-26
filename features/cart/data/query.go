@@ -3,7 +3,6 @@ package data
 import (
 	"ecommerce/features/cart"
 	"errors"
-	"fmt"
 	"log"
 	"strings"
 
@@ -24,10 +23,8 @@ func (cq *cartQuery) Add(idUser uint, idProduct uint) error {
 	cnv := Carts{}
 	cnv.UserID = idUser
 	cnv.ProductID = idProduct
-	fmt.Println("======data1=====")
 	err := cq.db.Create(&cnv).Error
 	// err2 := cq.db.Model(&X{}).Select("name").Find(&cnv).Error
-	fmt.Println("======data2=====")
 	if err != nil {
 		log.Println("register query error", err.Error())
 		msg := ""
@@ -45,25 +42,21 @@ func (cq *cartQuery) GetByIdC(idUser uint, idCart uint) (cart.CoreCart, error) {
 	var sementara Carts
 	sementara.UserID = idUser
 	sementara.ID = idCart
-	fmt.Println("======dt1=====")
 	if err := cq.db.Preload("Product").Find(&sementara).Error; err != nil {
 		log.Println("Get By ID query error", err.Error())
 		return ToCores(sementara), err
 	}
 	X := ToCores(sementara)
-	fmt.Println("======dt2=====")
 	return X, nil
 }
 func (cq *cartQuery) GetByIdU(idUser uint) ([]cart.CoreCart, error) {
 	var sementara []Carts
 	// sementara.UserID = idUser
-	fmt.Println("======dt1=====")
 	if err := cq.db.Preload("Product").Where("user_id = ?", idUser).Find(&sementara).Error; err != nil {
 		log.Println("Get By ID query error", err.Error())
 		return ToCoresArr(sementara), err
 	}
 	X := ToCoresArr(sementara)
-	fmt.Println("======dt2=====")
 	return X, nil
 }
 func (cq *cartQuery) Update(idUser uint, idCart uint, updatedData cart.CoreCart) (cart.CoreCart, error) {
