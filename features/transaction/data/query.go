@@ -2,7 +2,6 @@ package data
 
 import (
 	"ecommerce/features/transaction"
-	"errors"
 	"fmt"
 	"log"
 
@@ -19,48 +18,68 @@ func New(db *gorm.DB) transaction.TrxData {
 	}
 }
 
-func (tq *trxQuery) Add(cartID uint, userID uint, newTrx transaction.Core) error {
+func (tq *trxQuery) Add(userID uint, newTrx transaction.Core) (transaction.Core, error) {
 	fmt.Println("qry")
 	cnv := CoreToData(newTrx)
 
-	getCart := map[string]interface{}{}
-	if err := tq.db.Raw("SELECT products.id, products.title, products.price, carts.qty FROM carts JOIN products ON carts.product_id = products.id WHERE carts.id = ?", cartID).Find(&getCart).Error; err != nil {
+	getCart := []map[string]interface{}{}
+	if err := tq.db.Raw("SELECT products.id, products.title, products.price, carts.qty FROM carts JOIN products ON carts.product_id = products.id WHERE carts.user_id = ?", userID).Find(&getCart).Error; err != nil {
+		tq.db.Rollback()
 		log.Println("Get cart query error : ", err.Error())
-		return err
+		return transaction.Core{}, err
 	}
 
-	if getCart["price"] == nil {
-		return errors.New("Cart not found")
-	}
-
-	fmt.Println(getCart)
-
-	price := getCart["price"].(int64)
-	qty := getCart["qty"].(int64)
-
-	// priceInt, _ := strconv.Atoi(price)
-	// qtyInt, _ := strconv.Atoi(qty)
-
-	totalPrice := price * qty
-
+	cnv.Address = newTrx.Address
 	cnv.UserID = userID
-	cnv.TotalPrice = uint(totalPrice)
 
 	err := tq.db.Create(&cnv).Error
 	if err != nil {
+		tq.db.Rollback()
 		log.Println("Create query error : ", err.Error())
-		return err
+		return transaction.Core{}, err
 	}
 
 	trxID := cnv.ID
-	fmt.Println("trx id", trxID)
 
-	if err := tq.db.Raw("INSERT into transaction_details(transaction_id, product_id, title, price, qty, total_price) VALUE(?,?,?,?,?,?)", trxID, getCart["id"], getCart["title"], uint(price), uint(qty), uint(totalPrice)).Error; err != nil {
-		log.Println("Insert new transaction detail query error : ", err.Error())
-		return err
+	var productID uint64
+	var title string
+	var price int64
+	var qty int64
+	var total int64
+
+	for i := 0; i < len(getCart); i++ {
+		for k, v := range getCart[i] {
+			switch k {
+			case "id":
+				productID = v.(uint64)
+			case "title":
+				title = v.(string)
+			case "price":
+				price = v.(int64)
+			case "qty":
+				qty = v.(int64)
+			}
+		}
+
+		total = total + (price * qty)
+
+		if err := tq.db.Exec("INSERT into transaction_details(transaction_id, product_id, title, price, qty, total_price) VALUE(?,?,?,?,?,?)", trxID, productID, title, price, qty, total).Error; err != nil {
+			tq.db.Rollback()
+			log.Println("Insert new transaction detail query error : ", err.Error())
+			return transaction.Core{}, err
+		}
+		fmt.Println(trxID, productID, title, price, qty, total)
 	}
 
-	fmt.Println("query good")
+	if err := tq.db.Exec("UPDATE transactions SET total_price = ? WHERE id = ?", total, trxID).Error; err != nil {
+		tq.db.Rollback()
+		log.Println("Get cart query error : ", err.Error())
+		return transaction.Core{}, err
+	}
 
-	return nil
+	tq.db.Commit()
+
+	cnv.TotalPrice = uint(total)
+
+	return ToCore(cnv), nil
 }

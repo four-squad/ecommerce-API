@@ -2,7 +2,8 @@ package helper
 
 import (
 	"context"
-	config "ecommerce/config"
+	"ecommerce/config"
+
 	"io"
 	"mime/multipart"
 	"net/http"

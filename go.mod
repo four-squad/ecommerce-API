@@ -16,6 +16,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/midtrans/midtrans-go v1.3.6 // indirect
 	golang.org/x/time v0.2.0 // indirect
 )
 

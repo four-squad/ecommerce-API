@@ -8,8 +8,8 @@ import (
 )
 
 type Transaction_Detail struct {
-	TransactionID uint `gorm:"primaryKey"`
-	ProductID     uint `gorm:"primaryKey"`
+	TransactionID uint
+	ProductID     uint
 	Title         string
 	Price         uint
 	Qty           uint

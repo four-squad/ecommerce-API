@@ -5,7 +5,11 @@ import (
 	"ecommerce/helper"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
+
+	"github.com/midtrans/midtrans-go"
+	"github.com/midtrans/midtrans-go/snap"
 )
 
 type trxSrv struct {
@@ -18,12 +22,10 @@ func New(c transaction.TrxData) transaction.TrxService {
 	}
 }
 
-func (ts *trxSrv) Add(cartID uint, token interface{}, newTrx transaction.Core) error {
+func (ts *trxSrv) Add(token interface{}, newTrx transaction.Core) (transaction.Core, error) {
 	userID := helper.ExtractToken(token)
 
-	fmt.Println("srv")
-
-	err := ts.data.Add(cartID, uint(userID), newTrx)
+	res, err := ts.data.Add(uint(userID), newTrx)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -31,8 +33,23 @@ func (ts *trxSrv) Add(cartID uint, token interface{}, newTrx transaction.Core) e
 		} else {
 			msg = "unable to process the data"
 		}
-		return errors.New(msg)
+		return transaction.Core{}, errors.New(msg)
 	}
 
-	return nil
+	fmt.Println("servriecds", res)
+
+	id := strconv.Itoa(int(res.ID))
+
+	s := helper.MidtransSnapClient()
+	req := &snap.Request{
+		TransactionDetails: midtrans.TransactionDetails{
+			OrderID:  id,
+			GrossAmt: int64(res.TotalPrice),
+		},
+	}
+	snapResp, _ := s.CreateTransaction(req)
+
+	res.PaymentUrl = snapResp.RedirectURL
+
+	return res, nil
 }

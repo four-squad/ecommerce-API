@@ -28,13 +28,13 @@ type TrxHandler interface {
 }
 
 type TrxService interface {
-	Add(cartID uint, token interface{}, newTrx Core) error
+	Add(token interface{}, newTrx Core) (Core, error)
 	// BuyHistory(token interface{}) ([]Core, error)
 	// SellHistory(token interface{}) ([]Core, error)
 }
 
 type TrxData interface {
-	Add(cartID uint, userID uint, newTrx Core) error
+	Add(userID uint, newTrx Core) (Core, error)
 	// BuyHistory(userID uint) ([]Core, error)
 	// SellHistory(userID uint) ([]Core, error)
 }
