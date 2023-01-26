@@ -3,7 +3,10 @@ package config
 import (
 	cart "ecommerce/features/cart/data"
 	product "ecommerce/features/product/data"
+
 	transaction "ecommerce/features/transaction/data"
+
+	transaction_detail "ecommerce/features/transaction_detail/data"
 	user "ecommerce/features/user/data"
 	"fmt"
 	"log"
@@ -29,5 +32,5 @@ func Migrate(db *gorm.DB) {
 	db.AutoMigrate(product.Products{})
 	db.AutoMigrate(cart.Carts{})
 	db.AutoMigrate(transaction.Transactions{})
-	db.AutoMigrate(transaction.TransactionDetail{})
+	db.AutoMigrate(transaction_detail.Transaction_Detail{})
 }
