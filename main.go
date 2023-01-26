@@ -8,6 +8,9 @@ import (
 	productData "ecommerce/features/product/data"
 	productHandler "ecommerce/features/product/handler"
 	productService "ecommerce/features/product/services"
+	trxD "ecommerce/features/transaction/data"
+	trxH "ecommerce/features/transaction/handler"
+	trxS "ecommerce/features/transaction/services"
 	usrD "ecommerce/features/user/data"
 	usrH "ecommerce/features/user/handler"
 	usrS "ecommerce/features/user/services"
@@ -35,6 +38,10 @@ func main() {
 	cartSrv := cartService.New(cartDt)
 	cartHdl := cartHandler.New(cartSrv)
 
+	trxData := trxD.New(db)
+	trxSrv := trxS.New(trxData)
+	trxHdl := trxH.New(trxSrv)
+
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -58,6 +65,8 @@ func main() {
 
 	e.POST("/carts/:idProduct", cartHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
 	e.GET("/carts/:idCart", cartHdl.GetByIdC(), middleware.JWT([]byte(config.JWTKey)))
+
+	e.POST("/transactions/:id", trxHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
 	// e.GET("/products/:idUser", cartHdl.GetByIdU(), middleware.JWT([]byte(config.JWTKey)))
 	// e.GET("/products", cartHdl.GetAll())
 	if err := e.Start(":8000"); err != nil {

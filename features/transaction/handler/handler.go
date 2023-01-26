@@ -2,7 +2,6 @@ package handler
 
 import (
 	"ecommerce/features/transaction"
-	"ecommerce/helper"
 	"log"
 	"net/http"
 	"strconv"
@@ -28,7 +27,7 @@ func (th *trxHandle) Add() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "invalid input")
 		}
 
-		cartID, err := strconv.Atoi(c.Param("cartID"))
+		cartID, err := strconv.Atoi(c.Param("id"))
 
 		cnv := ToCore(input)
 
@@ -37,6 +36,6 @@ func (th *trxHandle) Add() echo.HandlerFunc {
 			log.Println("error post content : ", err.Error())
 			return c.JSON(http.StatusInternalServerError, "unable to process the data")
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "Created a new transactions succesfully"))
+		return c.JSON(http.StatusCreated, "Created a new transactions succesfully")
 	}
 }

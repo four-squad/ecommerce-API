@@ -12,11 +12,11 @@ type Transactions struct {
 	TotalPrice uint
 	Address    string
 	PaymentUrl string
-	Status     string
+	Status     string `gorm:"default:pending"`
 }
 type TransactionDetail struct {
-	TransactionID uint `gorm:"primary_key"`
-	ProductID     uint `gorm:"primary_key"`
+	TransactionID uint
+	ProductID     uint
 	Title         string
 	Price         uint
 	Qty           uint
