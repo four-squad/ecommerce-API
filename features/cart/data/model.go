@@ -11,9 +11,9 @@ type Carts struct {
 	Qty         uint
 	Total_price uint
 	UserID      uint
-	// User        User
-	ProductID uint
-	Product   Product
+	User        Users
+	ProductID   uint
+	Product     Products
 }
 
 // type X struct {
@@ -22,22 +22,27 @@ type Carts struct {
 // 	Image string
 // }
 
-type Product struct {
+type Products struct {
 	gorm.Model
 	Title       string
 	Price       uint
 	Description string
 	Image       string
+	UserID      uint
+	User        Users
+	Cartss      []Carts `gorm:"foreignKey:ProductID"`
 }
 
-// type User struct {
-// 	gorm.Model
-// 	Avatar   string
-// 	Name     string
-// 	Email    string
-// 	Address  string
-// 	Password string
-// }
+type Users struct {
+	gorm.Model
+	Avatar   string
+	Name     string
+	Email    string
+	Address  string
+	Password string
+	Cartss   []Carts    `gorm:"foreignKey:UserID"`
+	Product  []Products `gorm:"foreignKey:UserID"`
+}
 
 func ToCores(data Carts) cart.CoreCart {
 	return cart.CoreCart{
@@ -48,7 +53,7 @@ func ToCores(data Carts) cart.CoreCart {
 		Image:       data.Product.Image,
 		Total_Price: data.Total_price,
 		UserID:      data.UserID,
-		ProductID:   data.Product.ID,
+		ProductID:   data.ProductID,
 	}
 }
 func ToCoresArr(data []Carts) []cart.CoreCart {
