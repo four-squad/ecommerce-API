@@ -65,6 +65,8 @@ func main() {
 
 	e.POST("/carts/:idProduct", cartHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
 	e.GET("/carts/:idCart", cartHdl.GetByIdC(), middleware.JWT([]byte(config.JWTKey)))
+
+	e.POST("/transactions/:id", trxHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
 	// e.GET("/products/:idUser", cartHdl.GetByIdU(), middleware.JWT([]byte(config.JWTKey)))
 	// e.GET("/products", cartHdl.GetAll())
 	if err := e.Start(":8000"); err != nil {
