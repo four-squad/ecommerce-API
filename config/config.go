@@ -91,6 +91,7 @@ func ReadEnv() *AppConfig {
 		ServerKey = app.serverKey
 	}
 
+	ServerKey = app.serverKey
 	JWTKey = app.jwtKey
 
 	return &app
