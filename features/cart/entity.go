@@ -15,7 +15,7 @@ type CoreCart struct {
 
 type CartHandler interface {
 	Add() echo.HandlerFunc
-	// GetAll() echo.HandlerFunc
+	GetByIdC() echo.HandlerFunc
 	// Profile() echo.HandlerFunc
 	// Update() echo.HandlerFunc
 	// Deactivate() echo.HandlerFunc
@@ -23,7 +23,7 @@ type CartHandler interface {
 
 type CartService interface {
 	Add(token interface{}, idProduct uint) error
-	// GetAll(token interface{}) (CoreCart, error)
+	GetByIdC(token interface{}, idCart uint) (CoreCart, error)
 	// Profile(token interface{}) (interface{}, error)
 	// Update(formHeader multipart.FileHeader, token interface{}, updatedProfile Core) (Core, error)
 	// Deactivate(token interface{}) error
@@ -31,7 +31,7 @@ type CartService interface {
 
 type CartData interface {
 	Add(idUser uint, idProduct uint) error
-	// GetAll(idUser uint) (CoreCart, error)
+	GetByIdC(idUser uint, idCart uint) (CoreCart, error)
 	// Profile(id uint) (interface{}, error)
 	// Update(id uint, updatedProfile Core) (Core, error)
 	// Deactivate(id uint) error

@@ -4,6 +4,7 @@ import (
 	"ecommerce/features/cart"
 	"ecommerce/helper"
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -18,10 +19,11 @@ func New(cd cart.CartData) cart.CartService {
 }
 
 func (cuu *cartUseCase) Add(token interface{}, idProduct uint) error {
+	fmt.Println("======token=====")
 	idUser := helper.ExtractToken(token)
-
+	fmt.Println("======srv1=====")
 	err := cuu.qry.Add(uint(idUser), idProduct)
-
+	fmt.Println("======srv2=====")
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -34,4 +36,21 @@ func (cuu *cartUseCase) Add(token interface{}, idProduct uint) error {
 
 	return nil
 
+}
+func (cuu *cartUseCase) GetByIdC(token interface{}, idCart uint) (cart.CoreCart, error) {
+	fmt.Println("======srv1=====")
+	idUser := helper.ExtractToken(token)
+	res, err := cuu.qry.GetByIdC(uint(idUser), idCart)
+	fmt.Println("======srv2=====")
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data not found"
+		} else {
+			msg = "There is a problem with the server"
+		}
+		return cart.CoreCart{}, errors.New(msg)
+	}
+
+	return res, nil
 }
