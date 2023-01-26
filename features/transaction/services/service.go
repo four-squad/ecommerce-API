@@ -4,6 +4,7 @@ import (
 	"ecommerce/features/transaction"
 	"ecommerce/helper"
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -19,6 +20,8 @@ func New(c transaction.TrxData) transaction.TrxService {
 
 func (ts *trxSrv) Add(cartID uint, token interface{}, newTrx transaction.Core) error {
 	userID := helper.ExtractToken(token)
+
+	fmt.Println("srv")
 
 	err := ts.data.Add(cartID, uint(userID), newTrx)
 	if err != nil {

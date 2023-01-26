@@ -8,7 +8,7 @@ import (
 
 type Carts struct {
 	gorm.Model
-	Qty         uint
+	Qty         uint `gorm:"default:1"`
 	Total_price uint
 	UserID      uint
 	User        Users

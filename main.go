@@ -8,6 +8,9 @@ import (
 	productData "ecommerce/features/product/data"
 	productHandler "ecommerce/features/product/handler"
 	productService "ecommerce/features/product/services"
+	trxD "ecommerce/features/transaction/data"
+	trxH "ecommerce/features/transaction/handler"
+	trxS "ecommerce/features/transaction/services"
 	usrD "ecommerce/features/user/data"
 	usrH "ecommerce/features/user/handler"
 	usrS "ecommerce/features/user/services"
@@ -34,6 +37,10 @@ func main() {
 	cartDt := cartData.New(db)
 	cartSrv := cartService.New(cartDt)
 	cartHdl := cartHandler.New(cartSrv)
+
+	trxData := trxD.New(db)
+	trxSrv := trxS.New(trxData)
+	trxHdl := trxH.New(trxSrv)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
