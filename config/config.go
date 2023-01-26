@@ -8,15 +8,19 @@ import (
 	"github.com/spf13/viper"
 )
 
-var JWTKey string = ""
+var (
+	JWTKey    string = ""
+	ServerKey string = ""
+)
 
 type AppConfig struct {
-	DBUser string
-	DBPass string
-	DBHost string
-	DBPort int
-	DBName string
-	jwtKey string
+	DBUser    string
+	DBPass    string
+	DBHost    string
+	DBPort    int
+	DBName    string
+	jwtKey    string
+	serverKey string
 }
 
 func InitConfig() *AppConfig {
@@ -28,6 +32,10 @@ func ReadEnv() *AppConfig {
 
 	isRead := true
 
+	if val, found := os.LookupEnv("SERVERKEY"); found {
+		app.serverKey = val
+		isRead = false
+	}
 	if val, found := os.LookupEnv("JWT_KEY"); found {
 		app.jwtKey = val
 		isRead = false
@@ -72,5 +80,6 @@ func ReadEnv() *AppConfig {
 	}
 
 	JWTKey = app.jwtKey
+	ServerKey = app.serverKey
 	return &app
 }

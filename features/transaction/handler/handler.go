@@ -2,9 +2,9 @@ package handler
 
 import (
 	"ecommerce/features/transaction"
+	"ecommerce/helper"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -27,15 +27,13 @@ func (th *trxHandle) Add() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "invalid input")
 		}
 
-		cartID, err := strconv.Atoi(c.Param("id"))
-
 		cnv := ToCore(input)
 
-		err = th.srv.Add(uint(cartID), c.Get("user"), *cnv)
+		res, err := th.srv.Add(c.Get("user"), *cnv)
 		if err != nil {
 			log.Println("error post content : ", err.Error())
 			return c.JSON(http.StatusInternalServerError, "unable to process the data")
 		}
-		return c.JSON(http.StatusCreated, "Created a new transactions succesfully")
+		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "Created a new transactions succesfully", res))
 	}
 }
