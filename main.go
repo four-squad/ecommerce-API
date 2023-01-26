@@ -8,9 +8,14 @@ import (
 	productData "ecommerce/features/product/data"
 	productHandler "ecommerce/features/product/handler"
 	productService "ecommerce/features/product/services"
-	trxD "ecommerce/features/transaction/data"
-	trxH "ecommerce/features/transaction/handler"
-	trxS "ecommerce/features/transaction/services"
+
+	// trxD "ecommerce/features/transaction/data"
+	// trxH "ecommerce/features/transaction/handler"
+	// trxS "ecommerce/features/transaction/services"
+
+	// tdxD "ecommerce/features/transaction_detail/data"
+	// tdxH "ecommerce/features/transaction_detail/handler"
+	// tdxS "ecommerce/features/transaction_detail/services"
 	usrD "ecommerce/features/user/data"
 	usrH "ecommerce/features/user/handler"
 	usrS "ecommerce/features/user/services"
@@ -38,9 +43,13 @@ func main() {
 	cartSrv := cartService.New(cartDt)
 	cartHdl := cartHandler.New(cartSrv)
 
-	trxData := trxD.New(db)
-	trxSrv := trxS.New(trxData)
-	trxHdl := trxH.New(trxSrv)
+	// trxData := trxD.New(db)
+	// trxSrv := trxS.New(trxData)
+	// trxHdl := trxH.New(trxSrv)
+
+	// trxDataa := tdxD.New(db)
+	// trxService := tdxS.New(trxDataa)
+	// trxHandler := tdxH.New(trxService)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
@@ -69,7 +78,7 @@ func main() {
 	e.PUT("/checkout/:idCart", cartHdl.Update(), middleware.JWT([]byte(config.JWTKey)))
 	e.DELETE("/carts/:idCart", cartHdl.Delete(), middleware.JWT([]byte(config.JWTKey)))
 
-	e.POST("/transactions/:id", trxHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
+	// e.POST("/transactions/:id", trxHdl.Add(), middleware.JWT([]byte(config.JWTKey)))
 
 	if err := e.Start(":8000"); err != nil {
 		log.Println(err.Error())

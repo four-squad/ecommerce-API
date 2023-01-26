@@ -3,6 +3,9 @@ package data
 import (
 	c "ecommerce/features/cart/data"
 	p "ecommerce/features/product/data"
+	t "ecommerce/features/transaction/data"
+
+	// t "ecommerce/features/transaction/data"
 	"ecommerce/features/user"
 
 	"gorm.io/gorm"
@@ -10,13 +13,14 @@ import (
 
 type Users struct {
 	gorm.Model
-	Avatar   string
-	Name     string
-	Email    string
-	Address  string
-	Password string
-	Cartss   []c.Carts    `gorm:"foreignKey:UserID"`
-	Product  []p.Products `gorm:"foreignKey:UserID"`
+	Avatar      string
+	Name        string
+	Email       string
+	Address     string
+	Password    string
+	Cartss      []c.Carts        `gorm:"foreignKey:UserID"`
+	Product     []p.Products     `gorm:"foreignKey:UserID"`
+	Transaction []t.Transactions `gorm:"foreignKey:UserID"`
 }
 
 func ToCore(data Users) user.Core {

@@ -18,6 +18,7 @@ type Core struct {
 	PaymentUrl   string
 	Status       string
 	UpdatedAt    time.Time
+	UserID       uint
 }
 
 type TrxHandler interface {
