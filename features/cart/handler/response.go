@@ -3,6 +3,7 @@ package handler
 import "ecommerce/features/cart"
 
 type CartResponse struct {
+	ID          uint   `json:"id"`
 	Title       string `validate:"required" json:"title" form:"title"`
 	Qty         uint   `json:"qty" form:"qty"`
 	Price       uint   `validate:"required" json:"price" form:"price"`
@@ -19,6 +20,7 @@ type CartResponse struct {
 
 func ToResponse(data cart.CoreCart) CartResponse {
 	return CartResponse{
+		ID:          data.ID,
 		Title:       data.Title,
 		Qty:         data.Qty,
 		Price:       data.Price,

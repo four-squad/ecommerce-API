@@ -4,7 +4,6 @@ import (
 	"ecommerce/features/cart"
 	"ecommerce/helper"
 	"errors"
-	"fmt"
 	"strings"
 )
 
@@ -19,11 +18,8 @@ func New(cd cart.CartData) cart.CartService {
 }
 
 func (cuu *cartUseCase) Add(token interface{}, idProduct uint) error {
-	fmt.Println("======token=====")
 	idUser := helper.ExtractToken(token)
-	fmt.Println("======srv1=====")
 	err := cuu.qry.Add(uint(idUser), idProduct)
-	fmt.Println("======srv2=====")
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -38,10 +34,8 @@ func (cuu *cartUseCase) Add(token interface{}, idProduct uint) error {
 
 }
 func (cuu *cartUseCase) GetByIdC(token interface{}, idCart uint) (cart.CoreCart, error) {
-	fmt.Println("======srv1=====")
 	idUser := helper.ExtractToken(token)
 	res, err := cuu.qry.GetByIdC(uint(idUser), idCart)
-	fmt.Println("======srv2=====")
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -55,10 +49,8 @@ func (cuu *cartUseCase) GetByIdC(token interface{}, idCart uint) (cart.CoreCart,
 	return res, nil
 }
 func (cuu *cartUseCase) GetByIdU(token interface{}) ([]cart.CoreCart, error) {
-	fmt.Println("======srv1=====")
 	idUser := helper.ExtractToken(token)
 	res, err := cuu.qry.GetByIdU(uint(idUser))
-	fmt.Println("======srv2=====")
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
