@@ -34,6 +34,6 @@ func (th *trxHandle) Add() echo.HandlerFunc {
 			log.Println("error post content : ", err.Error())
 			return c.JSON(http.StatusInternalServerError, "unable to process the data")
 		}
-		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "Created a new transactions succesfully", res))
+		return c.JSON(helper.PrintSuccessReponse(http.StatusCreated, "Created a new transactions succesfully", ToResponse(res)))
 	}
 }

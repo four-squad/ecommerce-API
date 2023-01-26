@@ -1,10 +1,12 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
 
+	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
 
@@ -77,9 +79,19 @@ func ReadEnv() *AppConfig {
 			log.Println("error parse config : ", err.Error())
 			return nil
 		}
+
+		err = godotenv.Load("local.env")
+		if err != nil {
+			fmt.Println("Error saat baca env", err.Error())
+			return nil
+		}
+
+		app.serverKey = os.Getenv("SERVERKEY")
+
+		ServerKey = app.serverKey
 	}
 
 	JWTKey = app.jwtKey
-	ServerKey = app.serverKey
+
 	return &app
 }
