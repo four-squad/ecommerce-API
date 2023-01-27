@@ -3,7 +3,6 @@ package handler
 import (
 	"ecommerce/features/product"
 	"ecommerce/helper"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -47,12 +46,10 @@ func (pc *productControll) Add() echo.HandlerFunc {
 		if err != nil {
 			file = nil
 		}
-		fmt.Println("====handler======")
 		_, err = pc.srv.Add(*newProduct, token, file)
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		fmt.Println("====handler2======")
 		return c.JSON(http.StatusOK, helper.SuccessResponse("posting product berhasil"))
 
 	}

@@ -19,12 +19,10 @@ func New(db *gorm.DB) transaction.TrxData {
 }
 
 func (tq *trxQuery) Add(userID uint, newTrx transaction.Core) (transaction.Core, error) {
-	fmt.Println("qry")
 	cnv := CoreToData(newTrx)
 
 	getCart := []map[string]interface{}{}
 	if err := tq.db.Raw("SELECT products.id, products.title, products.price, carts.qty FROM carts JOIN products ON carts.product_id = products.id WHERE carts.user_id = ?", userID).Find(&getCart).Error; err != nil {
-		tq.db.Rollback()
 		log.Println("Get cart query error : ", err.Error())
 		return transaction.Core{}, err
 	}
@@ -34,7 +32,6 @@ func (tq *trxQuery) Add(userID uint, newTrx transaction.Core) (transaction.Core,
 
 	err := tq.db.Create(&cnv).Error
 	if err != nil {
-		tq.db.Rollback()
 		log.Println("Create query error : ", err.Error())
 		return transaction.Core{}, err
 	}
@@ -72,12 +69,9 @@ func (tq *trxQuery) Add(userID uint, newTrx transaction.Core) (transaction.Core,
 	}
 
 	if err := tq.db.Exec("UPDATE transactions SET total_price = ? WHERE id = ?", total, trxID).Error; err != nil {
-		tq.db.Rollback()
 		log.Println("Get cart query error : ", err.Error())
 		return transaction.Core{}, err
 	}
-
-	tq.db.Commit()
 
 	cnv.TotalPrice = uint(total)
 

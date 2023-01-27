@@ -4,7 +4,6 @@ import (
 	"ecommerce/features/product"
 	"ecommerce/helper"
 	"errors"
-	"fmt"
 	"mime/multipart"
 	"strings"
 
@@ -38,7 +37,6 @@ func (puu *productUseCase) GetAll() ([]product.CoreProduct, error) {
 
 func (puu *productUseCase) Add(newProduct product.CoreProduct, token interface{}, file *multipart.FileHeader) (product.CoreProduct, error) {
 	id := helper.ExtractToken(token)
-	fmt.Println("======service=====")
 	if file != nil {
 		if file.Size > 5000000 {
 			return product.CoreProduct{}, errors.New("file size is too big")
@@ -71,9 +69,7 @@ func (puu *productUseCase) Add(newProduct product.CoreProduct, token interface{}
 	// 	}
 	// 	return product.CoreProduct{}, errors.New("field required wajib diisi")
 	// }
-	fmt.Println("======service2=====")
 	res, err := puu.qry.Add(newProduct, uint(id))
-	fmt.Println("======service3=====")
 
 	if err != nil {
 		msg := ""

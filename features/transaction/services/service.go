@@ -4,12 +4,7 @@ import (
 	"ecommerce/features/transaction"
 	"ecommerce/helper"
 	"errors"
-	"fmt"
-	"strconv"
 	"strings"
-
-	"github.com/midtrans/midtrans-go"
-	"github.com/midtrans/midtrans-go/snap"
 )
 
 type trxSrv struct {
@@ -35,21 +30,6 @@ func (ts *trxSrv) Add(token interface{}, newTrx transaction.Core) (transaction.C
 		}
 		return transaction.Core{}, errors.New(msg)
 	}
-
-	fmt.Println("servriecds", res)
-
-	id := strconv.Itoa(int(res.ID))
-
-	s := helper.MidtransSnapClient()
-	req := &snap.Request{
-		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  id,
-			GrossAmt: int64(res.TotalPrice),
-		},
-	}
-	snapResp, _ := s.CreateTransaction(req)
-
-	res.PaymentUrl = snapResp.RedirectURL
 
 	return res, nil
 }
