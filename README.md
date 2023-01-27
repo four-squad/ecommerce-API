@@ -1,6 +1,6 @@
 # Ecommerce-API
 
-RESTful API for our  [E-Commerce App Project](https://www.cloudflare.com/)
+RESTful API for our  [E-Commerce App Project](https://github.com/four-squad/ecommerce-FE)
 
 Where users can post products, buy & sell their goods. It is built with Golang, MySQL, Docker, AWS EC2, etc.
 
