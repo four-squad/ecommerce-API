@@ -3,7 +3,6 @@ package data
 import (
 	"ecommerce/features/product"
 	"errors"
-	"fmt"
 	"log"
 	"strings"
 
@@ -34,7 +33,6 @@ func (pq *productQuery) GetAll() ([]product.CoreProduct, error) {
 func (pq *productQuery) Add(newProduct product.CoreProduct, id uint) (product.CoreProduct, error) {
 	cnv := CoreToData(newProduct)
 	cnv.UserID = id
-	fmt.Println("======data1=====")
 	err := pq.db.Create(&cnv).Error
 
 	if err != nil {
@@ -48,7 +46,6 @@ func (pq *productQuery) Add(newProduct product.CoreProduct, id uint) (product.Co
 		return product.CoreProduct{}, errors.New(msg)
 	}
 	newProduct.UserID = cnv.ID
-	fmt.Println("======data2=====")
 	return ToCores(cnv), nil
 }
 
