@@ -5,11 +5,12 @@ RESTful API for our  [E-Commerce App Project](https://www.cloudflare.com/)
 Where users can post products, buy & sell their goods. It is built with Golang, MySQL, Docker, AWS EC2, etc.
 
 # ⚡Features
-- CRUD (Users, Cart, Transactions)
-- Hashing password
-- Authentication & Authorization
-- Database Migration
-- Automated deployment with GitHub Actions, DockerHub & AWS EC2
+ - [x] CRUD (Users, Cart, Transactions)
+ - [x] Hashing passwordgit 
+ - [x] Authentication & Authorization
+ - [x] Database Migration
+ - [x] Automated deployment with GitHub Actions, DockerHub & AWS EC2
+ - [ ] Midtrans Integration as Payment Gateway
 
 # 📂 Folder Structure Pattern
 
